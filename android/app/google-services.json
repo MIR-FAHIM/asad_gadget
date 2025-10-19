@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "328074848566",
+    "project_id": "paystation-a397e",
+    "storage_bucket": "paystation-a397e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328074848566:android:27e5ce79e385c9a2de2b97",
+        "android_client_info": {
+          "package_name": "asad.gadget.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328074848566-4de3au2fpd37glr7o2lif63pd87tbou3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUgEnOdlrD4u1aal9nOzAEO3f42peJlr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328074848566-4de3au2fpd37glr7o2lif63pd87tbou3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
