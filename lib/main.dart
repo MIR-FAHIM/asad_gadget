@@ -1,4 +1,3 @@
-//import 'package:facebook_app_events/facebook_app_events.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,16 +8,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'package:asad_gadget/app/modules/settings/controllers/language_controller.dart';
-import 'package:asad_gadget/app/modules/settings/controllers/settings_controller.dart';
 import 'package:asad_gadget/app/services/auth_service.dart';
 import 'package:asad_gadget/app/services/firebase_messaging_service.dart';
 import 'package:asad_gadget/app/services/location_service.dart';
 import 'package:asad_gadget/app/services/settings_service.dart';
 import 'package:asad_gadget/app/services/translation_service.dart';
-import 'package:asad_gadget/service/shared_pref.dart';
-
-import 'package:flutter/services.dart' show PlatformException, MethodChannel;
 
 import 'app/routes/app_pages.dart';
 
@@ -39,51 +33,34 @@ Future<void> backgroundHander(RemoteMessage message) async {
             message.data['notification_type'] != null
         ? message.data['notification_type'].toString()
         : message.data['notification_sub_type'].toString();
-    print('backgroundHander 4:${message.data['notification_type']}');
+    print('backgroundHander:${message.data['notification_type']}');
   }
 }
 
-///remove
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    // 'This channel is used for important notifications.', // description
+    'high_importance_channel',
+    'High Importance Notifications',
     importance: Importance.high,
     playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-///remove
-
 initServices() async {
-
   Get.log('starting services ...');
   await GetStorage.init();
 
   await Firebase.initializeApp();
 
   await Permission.notification.status.then((value) {
-    //ios  Permission.accessNotificationPolicy;
     if (value.isGranted) {
-      print("hlw fahim 111 _______________________ notification request ");
+      print("notification granted");
     } else {
-      print("hlw fahim 222_______________________ notification request ");
-
       Permission.notification.request();
     }
   });
 
-  ///remove
-  // await flutterLocalNotificationsPlugin
-  //     .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-  //     ?.createNotificationChannel(channel);
-
-  ///remove
-  ///
   await Get.putAsync<SettingsService>(() async => SettingsService());
-  await Get.putAsync<SettingsController>(() async => SettingsController());
-  await Get.putAsync<LanguageController>(() async => LanguageController());
   await Get.putAsync<AuthService>(() async => AuthService());
   await Get.putAsync(() => TranslationService().init());
 
@@ -91,47 +68,32 @@ initServices() async {
   FirebaseMessaging.onBackgroundMessage(backgroundHander);
   await Get.putAsync(() => FireBaseMessagingService().init());
 
-  // NotificationLocal.initialize(flutterLocalNotificationsPlugin);
-
   Get.log('All services started...');
 }
 
 void main() async {
-  HttpOverrides.global = new MyHttpOverrides();
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPreff.to.initial();
   await initServices();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 800),
-      title: "PayPlus Agent",
+      title: "Asad Gadget",
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
-            color: Colors.white, // Set AppBar title text color to white
-            fontSize: 20, // Customize font size if needed
-            fontWeight: FontWeight.bold, // Customize font weight if needed
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
           iconTheme: IconThemeData(
-            color: Colors.white, // Set the AppBar icon color to white
+            color: Colors.white,
           ),
         ),
         primarySwatch: Colors.purple,
         primaryColor: const Color(0xFF652981),
-        dataTableTheme: DataTableThemeData(
-          headingRowColor: MaterialStateProperty.all(Colors.blueAccent),
-          headingTextStyle: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-          dataRowColor: MaterialStateProperty.all(Colors.lightBlue[50]),
-          dataTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-          ),
-        ),
       ),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
@@ -146,6 +108,3 @@ void main() async {
     ),
   );
 }
-
-///    <uses-permission android:name="android.permission.CALL_PHONE" />
-///     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
